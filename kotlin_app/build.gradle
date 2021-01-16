@@ -1,6 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -32,7 +35,7 @@ android {
         enabled = true
     }
 
-    
+
 }
 
 
@@ -61,6 +64,9 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttpLoggingInterceptorVersion"
 
     implementation "com.google.code.gson:gson:$gsonVersion"
+
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
 
     //test
     testImplementation "junit:junit:$jUnitVersion"

@@ -31,11 +31,13 @@ abstract class BaseEndpoint<R> {
      * */
     @Suppress("BlockingMethodInNonBlockingContext")
     suspend fun execute(): Either<ApiError, R> {
+        cancelCurrentCall()
+        currentCall = getCall()
         return withContext(Dispatchers.IO) {
             try {
                 currentCall.execute().localise()
             } catch (throwable: Throwable) {
-                Either.failure(throwable.toApiError()) //todo:
+                Either.failure(throwable.toApiError())
             }
         }
     }
