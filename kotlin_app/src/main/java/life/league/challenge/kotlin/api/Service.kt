@@ -23,25 +23,25 @@ object Service {
         retrofit.create<Api>(Api::class.java)
     }
 
-    fun login(username: String, password: String, callback: (result: Outcome<Account>) -> Unit) {
-
-        val credentials = "$username:$password"
-        val auth = "Basic " + Base64.encodeToString(credentials.toByteArray(),
-                Base64.NO_WRAP)
-        Thread(Runnable {
-            try {
-                val response: Response<Account> = api.login(auth).execute()
-                Handler(Looper.getMainLooper()).post {
-                    if (response.isSuccessful) {
-                        callback.invoke(Success(response.body()))
-                    } else {
-                        callback.invoke(Failure(response.message()))
-                    }
-                }
-            } catch (e: IOException) {
-                Log.e(TAG, "Login failed", e)
-                callback.invoke(Failure(e.message ?: ""))
-            }
-        }).start()
-    }
+//    fun login(username: String, password: String, callback: (result: Either<Account>) -> Unit) {
+//
+//        val credentials = "$username:$password"
+//        val auth = "Basic " + Base64.encodeToString(credentials.toByteArray(),
+//                Base64.NO_WRAP)
+//        Thread(Runnable {
+//            try {
+//                val response: Response<Account> = api.login(auth).execute()
+//                Handler(Looper.getMainLooper()).post {
+//                    if (response.isSuccessful) {
+//                        callback.invoke(Success(response.body()))
+//                    } else {
+//                        callback.invoke(Failure(response.message()))
+//                    }
+//                }
+//            } catch (e: IOException) {
+//                Log.e(TAG, "Login failed", e)
+//                callback.invoke(Failure(e.message ?: ""))
+//            }
+//        }).start()
+//    }
 }
