@@ -1,4 +1,4 @@
-package life.league.challenge.kotlin.api
+package life.league.challenge.kotlin.util
 
 sealed class Either<out E, out V> {
     data class Failure<out E>(val error: E) : Either<E, Nothing>()

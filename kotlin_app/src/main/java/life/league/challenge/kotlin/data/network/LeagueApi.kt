@@ -2,6 +2,7 @@ package life.league.challenge.kotlin.data.network
 
 import android.util.Log
 import life.league.challenge.kotlin.data.network.model.LoginApiResponse
+import life.league.challenge.kotlin.data.network.model.PostItemApiResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -43,5 +44,8 @@ interface LeagueApi {
 
     @GET("login")
     fun login(@Header("Authorization") credentials: String?): Call<LoginApiResponse>
+
+    @GET("posts")
+    fun getPosts(@Header("x-access-token") accessToken: String?): Call<List<PostItemApiResponse>>
 
 }

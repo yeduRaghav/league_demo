@@ -3,7 +3,7 @@ package life.league.challenge.kotlin.data.network.endpoint
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import life.league.challenge.kotlin.api.Either
+import life.league.challenge.kotlin.util.Either
 import retrofit2.Call
 import retrofit2.Response
 
