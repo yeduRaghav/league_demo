@@ -1,5 +1,6 @@
 package life.league.challenge.kotlin.ui.homescreen
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.*
@@ -52,34 +53,30 @@ class FeedUsecase @Inject constructor(
         }
     }
 
-    //todo: test me
+    private fun onApiError(apiError: ApiError) {
+        loadState.postValue(FeedLoadState.Failure(apiError.getFeedFailureReason()))
+    }
 
     private suspend fun handleOnApiCallSuccess(postsResponse: List<PostApiModel>, usersResponse: List<UserApiModel>) {
         val feedItems = postsResponse.toFeedItems(usersResponse.toUiModels())
         loadState.postValue(FeedLoadState.Success(feedItems))
     }
 
-    private fun onApiError(apiError: ApiError) {
-        val reason = when (apiError) {
-            is ApiError.Unreachable -> FailureReason.NetworkIssue
-            is ApiError.ClientError.Unauthorised -> FailureReason.InvalidCredentials
-            else -> FailureReason.GenericIssue
-        }
-        loadState.postValue(FeedLoadState.Failure(reason))
-    }
-
 }
+
+
+
+private typealias PostsApiResponse = Either<ApiError, List<PostApiModel>>
+private typealias UsersApiResponse = Either<ApiError, List<UserApiModel>>
 
 sealed class FeedLoadState {
     data class Success(val feed: List<FeedItem>) : FeedLoadState()
     data class Failure(val reason: FailureReason) : FeedLoadState()
 }
 
-private typealias PostsApiResponse = Either<ApiError, List<PostApiModel>>
-private typealias UsersApiResponse = Either<ApiError, List<UserApiModel>>
 
-
-private suspend fun List<PostApiModel>.toFeedItems(users: Map<Long, User>): List<FeedItem> {
+@VisibleForTesting
+suspend fun List<PostApiModel>.toFeedItems(users: Map<Long, User>): List<FeedItem> {
     return withContext(Dispatchers.Default) {
         mapNotNull {
             users[it.userId]?.let { user -> FeedItem(user, it.toUiModel()) }
@@ -87,25 +84,39 @@ private suspend fun List<PostApiModel>.toFeedItems(users: Map<Long, User>): List
     }
 }
 
-private fun PostApiModel.toUiModel(): Post {
+@VisibleForTesting
+fun PostApiModel.toUiModel(): Post {
     return Post(postId = id, title = title, description = body)
 }
 
-private suspend fun List<UserApiModel>.toUiModels(): Map<Long, User> {
+@VisibleForTesting
+suspend fun List<UserApiModel>.toUiModels(): Map<Long, User> {
     return withContext(Dispatchers.Default) {
         associate { it.id to it.toUiModel() }
     }
 }
 
-private fun UserApiModel.toUiModel(): User {
+@VisibleForTesting
+fun UserApiModel.toUiModel(): User {
     return User(
             userId = id,
-            userName = name,
+            userName = username,
+            name = name,
             avatar = avatar,
             phone = phone,
             email = email,
             website = website
     )
 }
+
+@VisibleForTesting
+fun ApiError.getFeedFailureReason(): FailureReason {
+    return when (this) {
+        is ApiError.Unreachable -> FailureReason.NetworkIssue
+        is ApiError.ClientError.Unauthorised -> FailureReason.InvalidCredentials
+        else -> FailureReason.GenericIssue
+    }
+}
+
 
 

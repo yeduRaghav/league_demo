@@ -6,6 +6,7 @@ package life.league.challenge.kotlin.ui.model
 data class User(
         val userId: Long,
         val userName: String,
+        val name: String,
         val avatar: String,
         val phone: String,
         val email: String,
