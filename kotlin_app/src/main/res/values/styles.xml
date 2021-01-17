@@ -8,4 +8,27 @@
     <item name="colorAccent">@color/colorAccent</item>
   </style>
 
+
+  <style name="roundedCornersImageView">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">50%</item>
+  </style>
+
+  <style name="AppTextAppearance">
+    <item name="android:textColor">@android:color/black</item>
+  </style>
+
+  <style name="AppTextAppearance.Title1">
+    <item name="android:textSize">20sp</item>
+  </style>
+
+  <style name="AppTextAppearance.Title2">
+    <item name="android:textSize">18sp</item>
+  </style>
+
+  <style name="AppTextAppearance.Description1">
+    <item name="android:textSize">15sp</item>
+  </style>
+
+
 </resources>

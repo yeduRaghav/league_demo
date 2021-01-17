@@ -7,9 +7,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_home_screen.*
 import life.league.challenge.kotlin.R
 import life.league.challenge.kotlin.ui.homescreen.usecase.login.FailureReason
 import life.league.challenge.kotlin.ui.model.FeedItem
+import life.league.challenge.kotlin.util.show
 
 @AndroidEntryPoint
 class HomeScreenActivity : AppCompatActivity() {
@@ -19,6 +21,8 @@ class HomeScreenActivity : AppCompatActivity() {
     }
 
     private val viewModel by viewModels<HomeScreenViewModel>()
+    private val feedAdapter = FeedListAdapter()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,8 +34,9 @@ class HomeScreenActivity : AppCompatActivity() {
 
     private fun setupViews() {
         setContentView(R.layout.activity_home_screen)
-
-        //todo:
+        home_screen_recycler_view.apply {
+            adapter = feedAdapter
+        }
     }
 
     private fun observeViewModel() {
@@ -68,7 +73,8 @@ class HomeScreenActivity : AppCompatActivity() {
 
 
     private fun showFeed(feedItems: List<FeedItem>) {
-        Toast.makeText(this, feedItems.size.toString(), Toast.LENGTH_SHORT).show()
+        home_screen_recycler_view.show()
+        feedAdapter.submitList(feedItems)
     }
 
     override fun onStart() {
