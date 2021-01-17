@@ -1,4 +1,4 @@
-package life.league.challenge.kotlin.ui.homescreen
+package life.league.challenge.kotlin.ui.homescreen.usecase.login
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
@@ -16,10 +16,10 @@ import javax.inject.Inject
 /**
  * This Usecase takes care of logging-in
  */
-class LoginUsecase @Inject constructor(
+class DefaultLoginUsecase @Inject constructor(
         private val sessionManager: SessionManager,
         private val loginEndpoint: LoginEndpoint
-) {
+) : LoginUseCase {
 
     private var loginJob: Job? = null
     private lateinit var scope: CoroutineScope
@@ -27,22 +27,30 @@ class LoginUsecase @Inject constructor(
     @VisibleForTesting
     val loginResult = MutableLiveData<LoginState>()
 
-    fun getLoginResult(): LiveData<LoginState> = loginResult
+    override fun getLoginResult(): LiveData<LoginState> = loginResult
 
     /**
      * Make sure scope is set before invoking login()
      * */
-    fun setScope(scope: CoroutineScope) {
+    override fun setScope(scope: CoroutineScope) {
         this.scope = scope
     }
 
-    fun login(userName: String, password: String) {
+    override fun isLoggedIn(): Boolean {
+        return sessionManager.getApiKey() != null
+    }
+
+    override fun login(userName: String, password: String) {
         loginEndpoint.setCredentials(userName, password)
         attemptLogin()
     }
 
-    private fun attemptLogin() {
+    override fun cancel() {
         loginJob?.cancel()
+    }
+
+    private fun attemptLogin() {
+        cancel()
         loginJob = scope.launch {
             when (val response = loginEndpoint.execute()) {
                 is Either.Failure -> onApiCallFailure(response.error)
@@ -64,20 +72,6 @@ class LoginUsecase @Inject constructor(
         } ?: LoginState.Failure(FailureReason.BadResponseData)
         loginResult.postValue(result)
     }
-}
-
-
-sealed class LoginState {
-    object Success : LoginState()
-    data class Failure(val reason: FailureReason) : LoginState()
-}
-
-//todo: should I be global ?
-sealed class FailureReason {
-    object InvalidCredentials : FailureReason()
-    object BadResponseData : FailureReason()
-    object NetworkIssue : FailureReason()
-    object GenericIssue : FailureReason()
 }
 
 

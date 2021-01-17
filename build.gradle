@@ -11,7 +11,6 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.3'
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion"
-        
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -38,7 +37,7 @@ ext {
     recyclerViewVersion = "1.1.0"
     cardVersion = "1.0.0"
     materialVersion = "1.2.1"
-    picassoVersion ="2.71828"
+    picassoVersion = "2.71828"
 
     lifecycleExtVersion = "2.2.0"
     livedata_version = "2.2.0"
@@ -48,7 +47,8 @@ ext {
     retrofitVersion = "2.9.0"
     okhttpLoggingInterceptorVersion = "4.7.2"
 
-    jodaVersion = "2.10.6"
+    hiltLifeCycleVersion = "1.0.0-alpha02"
+
     gsonVersion = "2.8.5"
 
     jUnitVersion = "4.13.1"
@@ -57,5 +57,5 @@ ext {
     espressoVersion = "3.3.0"
     okhttpMockWebServerVersion = "4.3.1"
     coroutineTestVersion = "1.4.1"
-    archTestingVersion="2.1.0"
+    archTestingVersion = "2.1.0"
 }

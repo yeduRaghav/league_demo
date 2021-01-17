@@ -1,4 +1,4 @@
-package life.league.challenge.kotlin.ui.homescreen
+package life.league.challenge.kotlin.ui.homescreen.usecase.feed
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
@@ -9,31 +9,32 @@ import life.league.challenge.kotlin.data.network.endpoint.GetUsersEndpoint
 import life.league.challenge.kotlin.data.network.endpoint.base.ApiError
 import life.league.challenge.kotlin.data.network.model.PostApiModel
 import life.league.challenge.kotlin.data.network.model.UserApiModel
+import life.league.challenge.kotlin.ui.homescreen.usecase.login.FailureReason
 import life.league.challenge.kotlin.ui.model.FeedItem
 import life.league.challenge.kotlin.ui.model.Post
 import life.league.challenge.kotlin.ui.model.User
 import life.league.challenge.kotlin.util.Either
 import javax.inject.Inject
 
-/**
- * Usecase takes care of showing a feed of posts
- */
-class FeedUsecase @Inject constructor(
+class DefaultFeedUseCase @Inject constructor(
         private val postsEndpoint: GetPostsEndpoint,
         private val usersEndpoint: GetUsersEndpoint
-) {
+) : FeedUseCase {
     private lateinit var scope: CoroutineScope
     private var feedJob: Job? = null
     private val loadState = MutableLiveData<FeedLoadState>()
 
-    fun setScope(scope: CoroutineScope) {
+    override fun setScope(scope: CoroutineScope) {
         this.scope = scope
     }
 
-    fun getLoadState(): LiveData<FeedLoadState> = loadState
+    override fun getLoadState(): LiveData<FeedLoadState> = loadState
 
-    fun loadFeed() {
+    override fun cancel() {
         feedJob?.cancel()
+    }
+
+    override fun loadFeed() {
         feedJob = scope.launch {
             val postResponse = async { postsEndpoint.execute() }
             val userResponse = async { usersEndpoint.execute() }
@@ -65,14 +66,8 @@ class FeedUsecase @Inject constructor(
 }
 
 
-
 private typealias PostsApiResponse = Either<ApiError, List<PostApiModel>>
 private typealias UsersApiResponse = Either<ApiError, List<UserApiModel>>
-
-sealed class FeedLoadState {
-    data class Success(val feed: List<FeedItem>) : FeedLoadState()
-    data class Failure(val reason: FailureReason) : FeedLoadState()
-}
 
 
 @VisibleForTesting

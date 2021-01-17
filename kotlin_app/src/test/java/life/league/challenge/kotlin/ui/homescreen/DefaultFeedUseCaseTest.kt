@@ -9,6 +9,11 @@ import kotlinx.coroutines.test.setMain
 import life.league.challenge.kotlin.data.network.endpoint.base.ApiError
 import life.league.challenge.kotlin.data.network.model.PostApiModel
 import life.league.challenge.kotlin.data.network.model.UserApiModel
+import life.league.challenge.kotlin.ui.homescreen.usecase.feed.getFeedFailureReason
+import life.league.challenge.kotlin.ui.homescreen.usecase.feed.toFeedItems
+import life.league.challenge.kotlin.ui.homescreen.usecase.feed.toUiModel
+import life.league.challenge.kotlin.ui.homescreen.usecase.feed.toUiModels
+import life.league.challenge.kotlin.ui.homescreen.usecase.login.FailureReason
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
@@ -19,7 +24,7 @@ import org.mockito.Mockito
 
 @ExperimentalCoroutinesApi
 @RunWith(JUnit4::class)
-class FeedUsecaseTest {
+class DefaultFeedUseCaseTest {
 
     private val dispatcher = TestCoroutineDispatcher()
 
