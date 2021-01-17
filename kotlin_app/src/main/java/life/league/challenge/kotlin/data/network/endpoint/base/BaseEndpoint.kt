@@ -1,4 +1,4 @@
-package life.league.challenge.kotlin.data.network.endpoint
+package life.league.challenge.kotlin.data.network.endpoint.base
 
 import android.util.Log
 import kotlinx.coroutines.Dispatchers

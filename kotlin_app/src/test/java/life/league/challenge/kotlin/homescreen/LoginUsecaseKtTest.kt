@@ -1,8 +1,8 @@
 package life.league.challenge.kotlin.homescreen
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import life.league.challenge.kotlin.data.network.endpoint.ApiError
 import life.league.challenge.kotlin.data.network.endpoint.LoginEndpoint
+import life.league.challenge.kotlin.data.network.endpoint.base.ApiError
 import life.league.challenge.kotlin.data.network.model.LoginApiResponse
 import life.league.challenge.kotlin.session.SessionManager
 import life.league.challenge.kotlin.util.getOrAwaitValue

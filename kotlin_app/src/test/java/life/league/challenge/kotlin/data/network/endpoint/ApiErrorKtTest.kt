@@ -1,6 +1,10 @@
 package life.league.challenge.kotlin.data.network.endpoint
 
-import org.junit.Assert.*
+import life.league.challenge.kotlin.data.network.endpoint.base.ApiError
+import life.league.challenge.kotlin.data.network.endpoint.base.StatusCode
+import life.league.challenge.kotlin.data.network.endpoint.base.getApiError
+import life.league.challenge.kotlin.data.network.endpoint.base.toApiError
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.net.ConnectException
 import java.net.UnknownHostException

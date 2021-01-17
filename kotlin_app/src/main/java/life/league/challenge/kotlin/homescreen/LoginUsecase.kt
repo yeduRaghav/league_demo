@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import life.league.challenge.kotlin.data.network.endpoint.ApiError
 import life.league.challenge.kotlin.data.network.endpoint.LoginEndpoint
+import life.league.challenge.kotlin.data.network.endpoint.base.ApiError
 import life.league.challenge.kotlin.data.network.model.LoginApiResponse
 import life.league.challenge.kotlin.session.SessionManager
 import life.league.challenge.kotlin.util.Either

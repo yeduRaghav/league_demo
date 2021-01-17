@@ -1,6 +1,7 @@
 package life.league.challenge.kotlin.data.network
 
 import android.util.Log
+import life.league.challenge.kotlin.data.network.interceptor.AuthorisationInterceptor
 import life.league.challenge.kotlin.data.network.model.LoginApiResponse
 import life.league.challenge.kotlin.data.network.model.PostApiModel
 import life.league.challenge.kotlin.data.network.model.UserApiModel
@@ -20,8 +21,9 @@ interface LeagueApi {
     companion object {
         private const val BASE_URL = "https://engineering.league.dev/challenge/api/"
 
-        fun create(): LeagueApi {
+        fun create(authInterceptor: AuthorisationInterceptor): LeagueApi {
             val okHttpClient = OkHttpClient.Builder()
+                    .addInterceptor(authInterceptor)
                     .addInterceptor(getLoggingInterceptor())
                     .build()
 
@@ -46,8 +48,8 @@ interface LeagueApi {
     fun login(@Header("Authorization") credentials: String?): Call<LoginApiResponse>
 
     @GET("posts")
-    fun getPosts(@Header("x-access-token") accessToken: String?): Call<List<PostApiModel>>
+    fun getPosts(): Call<List<PostApiModel>>
 
     @GET("users")
-    fun getUsers(@Header("x-access-token") accessToken: String?): Call<List<UserApiModel>>
+    fun getUsers(): Call<List<UserApiModel>>
 }

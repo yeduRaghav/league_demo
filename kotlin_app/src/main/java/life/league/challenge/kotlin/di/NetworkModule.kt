@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import life.league.challenge.kotlin.data.network.LeagueApi
+import life.league.challenge.kotlin.data.network.interceptor.AuthorisationInterceptor
 import javax.inject.Singleton
 
 @InstallIn(ApplicationComponent::class)
@@ -13,8 +14,8 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun providesLeagueApi() : LeagueApi {
-        return LeagueApi.create()
+    fun providesLeagueApi(authorisationInterceptor: AuthorisationInterceptor): LeagueApi {
+        return LeagueApi.create(authorisationInterceptor)
     }
 
 }
