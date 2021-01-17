@@ -1,4 +1,4 @@
-package life.league.challenge.kotlin.homescreen
+package life.league.challenge.kotlin.ui.homescreen
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import life.league.challenge.kotlin.data.network.endpoint.LoginEndpoint
@@ -22,7 +22,7 @@ class LoginUsecaseKtTest {
 
     @Test
     fun `ApiError_getLoginFailureReason() returns NetworkIssue for Unreachable`() {
-        Assert.assertTrue(ApiError.Unreachable(null).getLoginFailureReason() == NetworkIssue)
+        Assert.assertTrue(ApiError.Unreachable(null).getLoginFailureReason() == FailureReason.NetworkIssue)
     }
 
     @Test
@@ -34,7 +34,7 @@ class LoginUsecaseKtTest {
         useCase.onApiCallSuccess(LoginApiResponse(null))
 
         val result = useCase.loginResult.getOrAwaitValue()
-        assert(result is Failure && result.reason is BadResponseData)
+        assert(result is LoginState.Failure && result.reason is FailureReason.BadResponseData)
     }
 
     @Test

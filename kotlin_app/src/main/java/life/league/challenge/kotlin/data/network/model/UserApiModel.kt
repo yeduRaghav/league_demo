@@ -7,7 +7,7 @@ data class UserApiModel(
         @SerializedName("avatar") val avatar: String,
         @SerializedName("company") val company: Company,
         @SerializedName("email") val email: String,
-        @SerializedName("id") val id: Int,
+        @SerializedName("id") val id: Long,
         @SerializedName("name") val name: String,
         @SerializedName("phone") val phone: String,
         @SerializedName("username") val username: String,

@@ -1,4 +1,4 @@
-package life.league.challenge.kotlin.homescreen
+package life.league.challenge.kotlin.ui.homescreen
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -7,8 +7,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import life.league.challenge.kotlin.R
-import life.league.challenge.kotlin.data.network.endpoint.GetUsersEndpoint
-import life.league.challenge.kotlin.util.Either
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -18,11 +16,12 @@ class HomeScreenActivity : AppCompatActivity() {
         private const val TAG = "MainActivity"
     }
 
+
     @Inject
     lateinit var loginUsecase: LoginUsecase
 
     @Inject
-    lateinit var userEndpoint: GetUsersEndpoint
+    lateinit var feedUsecase: FeedUsecase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,10 +32,26 @@ class HomeScreenActivity : AppCompatActivity() {
         super.onResume()
         loginUsecase.getLoginResult().observe(this, Observer { a ->
             when (a) {
-                is Success -> {
+                is LoginState.Success -> {
                     getUsers()
                 }
-                is Failure -> {
+                is LoginState.Failure -> {
+                }
+            }
+        })
+
+        feedUsecase.getLoadState().observe(this, Observer { feed ->
+            when (feed) {
+                is FeedLoadState.Success -> {
+                    feed.feed
+                }
+                is FeedLoadState.Failure -> {
+                    when (feed.reason) {
+                        FailureReason.InvalidCredentials -> TODO()
+                        FailureReason.BadResponseData -> TODO()
+                        FailureReason.NetworkIssue -> TODO()
+                        FailureReason.GenericIssue -> TODO()
+                    }
                 }
             }
         })
@@ -49,15 +64,9 @@ class HomeScreenActivity : AppCompatActivity() {
 
     private fun getUsers() {
         GlobalScope.launch {
-            val response = userEndpoint.execute()
-            when (response) {
-                is Either.Success -> {
+            feedUsecase.setScope(this)
+            feedUsecase.loadFeed()
 
-                }
-                is Either.Failure -> {
-
-                }
-            }
         }
     }
 

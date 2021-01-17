@@ -1,4 +1,4 @@
-package life.league.challenge.kotlin.homescreen
+package life.league.challenge.kotlin.ui.homescreen
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
@@ -25,9 +25,9 @@ class LoginUsecase @Inject constructor(
     private lateinit var scope: CoroutineScope
 
     @VisibleForTesting
-    val loginResult = MutableLiveData<LoginResult>()
+    val loginResult = MutableLiveData<LoginState>()
 
-    fun getLoginResult(): LiveData<LoginResult> = loginResult
+    fun getLoginResult(): LiveData<LoginState> = loginResult
 
     /**
      * Make sure scope is set before invoking login()
@@ -53,34 +53,41 @@ class LoginUsecase @Inject constructor(
 
     private fun onApiCallFailure(apiError: ApiError) {
         val failureReason = apiError.getLoginFailureReason()
-        loginResult.postValue(Failure(failureReason))
+        loginResult.postValue(LoginState.Failure(failureReason))
     }
 
     @VisibleForTesting
     fun onApiCallSuccess(response: LoginApiResponse) {
         val result = response.apiKey?.let {
             sessionManager.setApiKey(it)
-            Success
-        } ?: Failure(BadResponseData)
+            LoginState.Success
+        } ?: LoginState.Failure(FailureReason.BadResponseData)
         loginResult.postValue(result)
     }
 }
 
+
+sealed class LoginState {
+    object Success : LoginState()
+    data class Failure(val reason: FailureReason) : LoginState()
+}
+
+//todo: should I be global ?
+sealed class FailureReason {
+    object InvalidCredentials : FailureReason()
+    object BadResponseData : FailureReason()
+    object NetworkIssue : FailureReason()
+    object GenericIssue : FailureReason()
+}
+
+
 @VisibleForTesting
-fun ApiError.getLoginFailureReason(): LoginFailureReason {
+fun ApiError.getLoginFailureReason(): FailureReason {
     return when (this) {
-        is ApiError.Unreachable -> NetworkIssue
-        else -> GenericIssue
+        is ApiError.Unreachable -> FailureReason.NetworkIssue
+        else -> FailureReason.GenericIssue
     }
 }
 
-sealed class LoginResult
-object Success : LoginResult()
-data class Failure(val reason: LoginFailureReason) : LoginResult()
-
-sealed class LoginFailureReason
-object NetworkIssue : LoginFailureReason()
-object BadResponseData : LoginFailureReason()
-object GenericIssue : LoginFailureReason()
 
 
