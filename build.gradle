@@ -55,5 +55,7 @@ ext {
     jUnitExtensionVersion = "1.1.2"
     mockitoVersion = "3.3.1"
     espressoVersion = "3.3.0"
-    okhttpMockWebServer = "4.3.1"
+    okhttpMockWebServerVersion = "4.3.1"
+    coroutineTestVersion = "1.4.1"
+    archTestingVersion="2.1.0"
 }

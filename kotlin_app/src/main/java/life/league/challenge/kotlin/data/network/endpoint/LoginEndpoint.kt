@@ -12,8 +12,8 @@ class LoginEndpoint @Inject constructor(private val api: LeagueApi) : BaseEndpoi
 
     private var credentials: String? = null
 
-    fun setData(credentials: String?) {
-        this.credentials = credentials
+    fun setCredentials(userName: String?, password: String?) {
+        credentials = StringBuilder().append(userName).append(":").append(password).toString()
     }
 
     override fun getCall(): Call<LoginApiResponse> {
