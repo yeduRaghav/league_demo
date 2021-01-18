@@ -20,8 +20,8 @@ Interface based design & leveraging extension functions aid in building testable
 
 ## Highlights :
 - FeedUseCase & LoginUseCase shows example of abstraction, sepration of concern & resuability for bussiness logic, keeping ViewModels clean.
-- Endpoint implementation showcase how apiendpoints can be easily added & their responses dealt ina centralised manner.(see data.network.endpoint.base)
-- Model -> Domain -> View DTO transformations provide abstraction of implementational details 
+- Endpoint implementation showcase how new api-endpoints can be easily added to the project & their responses be dealt in a centralised manner.(see data.network.endpoint.base)
+- Model -> Domain -> View DTO transformations provide abstraction of implementational details between the layers.
 
 ## Improvements necessary :
 - The project structure could be cleaned up.
