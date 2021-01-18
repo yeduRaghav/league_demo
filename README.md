@@ -8,20 +8,20 @@
  - Run `kotlin-app` module
  
 ## Architecture :
-- MVVM is the architecture with additional abstraction for bussiness logic (see: UseCases) and NetowrkingLogic(see: Endpoints)
+- MVVM is the architecture with additional abstraction for business logic (see: UseCases) and Networking Logic(see: Endpoints)
 - Fully written in Kotlin 
 - Coroutines, LiveData, Hilt(DependencyInjection)
 
 
 ## Testing :
-There are unit tests for important bussiness logic & networking logic, mostly regarding data transformation.
+There are unit tests for important business logic & networking logic, mostly regarding data transformation.
 More testing could be easily implemented, given the modularity & loose coupling between entities.
 Interface based design & leveraging extension functions aid in building testable code.
 
 ## Highlights :
-- FeedUseCase & LoginUseCase shows example of abstraction, sepration of concern & resuability for bussiness logic, keeping ViewModels clean.
+- FeedUseCase & LoginUseCase shows example of abstraction, sepration of concern & reusability for business logic, keeping ViewModels clean.
 - Endpoint implementation showcase how new api-endpoints can be easily added to the project & their responses be dealt in a centralised manner.(see data.network.endpoint.base)
-- Model -> Domain -> View DTO transformations provide abstraction of implementational details between the layers.
+- Model -> Domain -> View DTO transformations provide abstraction of implementation details between the layers.
 
 ## Improvements necessary :
 - The project structure could be cleaned up.
