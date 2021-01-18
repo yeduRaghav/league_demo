@@ -7,14 +7,17 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/feed_item_avatar"
-        android:layout_width="@dimen/avatar_diameter"
-        android:layout_height="@dimen/avatar_diameter"
+        android:layout_width="@dimen/feed_avatar_diameter"
+        android:layout_height="@dimen/feed_avatar_diameter"
         android:layout_marginStart="@dimen/margin_16"
         android:layout_marginTop="@dimen/margin_8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:clickable="true"
+        android:adjustViewBounds="true"
+        android:focusable="true"
         app:shapeAppearanceOverlay="@style/roundedCornersImageView"
+        android:scaleType="fitCenter"
         tools:src="@tools:sample/avatars" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -32,6 +35,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/feed_item_avatar"
         app:layout_constraintTop_toTopOf="parent"
+        android:focusable="true"
         tools:text="@tools:sample/lorem/random" />
 
     <com.google.android.material.textview.MaterialTextView

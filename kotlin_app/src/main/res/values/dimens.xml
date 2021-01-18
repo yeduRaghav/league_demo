@@ -2,8 +2,14 @@
 <resources>
     <dimen name="margin_8">8dp</dimen>
     <dimen name="margin_16">16dp</dimen>
+    <dimen name="margin_24">24dp</dimen>
     <dimen name="margin_32">32dp</dimen>
 
-    <dimen name="avatar_diameter">56dp</dimen>
+    <dimen name="feed_avatar_diameter">56dp</dimen>
     <dimen name="progress_bar_diameter">80dp</dimen>
+
+    <dimen name="profile_card_horizontal_margin">56dp</dimen>
+    <dimen name="profile_card_corner_radius">24dp</dimen>
+    <dimen name="profile_card_avatar_diameter">80dp</dimen>
+    <dimen name="profile_card_internal_bottom_margin">64dp</dimen>
 </resources>

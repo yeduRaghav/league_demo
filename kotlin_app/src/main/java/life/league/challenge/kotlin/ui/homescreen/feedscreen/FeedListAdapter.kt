@@ -1,4 +1,4 @@
-package life.league.challenge.kotlin.ui.homescreen
+package life.league.challenge.kotlin.ui.homescreen.feedscreen
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +11,7 @@ import com.google.android.material.textview.MaterialTextView
 import com.squareup.picasso.Picasso
 import life.league.challenge.kotlin.R
 import life.league.challenge.kotlin.ui.model.FeedItem
+import life.league.challenge.kotlin.ui.model.User
 import life.league.challenge.kotlin.util.setThrottledClickListener
 
 /**
@@ -45,7 +46,7 @@ private class DiffCallback : DiffUtil.ItemCallback<FeedItem>() {
 }
 
 interface FeedClickListener {
-    fun onAuthorClicked(feedItem: FeedItem)
+    fun onUserClicked(user: User)
 }
 
 class FeedItemViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -71,16 +72,10 @@ class FeedItemViewHolder private constructor(itemView: View) : RecyclerView.View
                     .load(it.avatar)
                     .into(avatar)
             //todo: placeholder
-        }
-        avatar.setThrottledClickListener {
-            listener.onAuthorClicked(feedItem)
-        }
-        authorUserName.setThrottledClickListener {
-            listener.onAuthorClicked(feedItem)
+            avatar.setThrottledClickListener { listener.onUserClicked(it) }
+            authorUserName.setThrottledClickListener { listener.onUserClicked(it) }
         }
 
-
-        //todo: click
         feedItem.post.also {
             title.text = it.title
             description.text = it.description
