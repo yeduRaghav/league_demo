@@ -11,21 +11,23 @@ import com.google.android.material.textview.MaterialTextView
 import com.squareup.picasso.Picasso
 import life.league.challenge.kotlin.R
 import life.league.challenge.kotlin.ui.model.FeedItem
+import life.league.challenge.kotlin.util.setThrottledClickListener
 
 /**
  * Renders the feed.
  */
-class FeedListAdapter : ListAdapter<FeedItem, FeedItemViewHolder>(DiffCallback()) {
+class FeedListAdapter(private val feedClickListener: FeedClickListener) : ListAdapter<FeedItem, FeedItemViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedItemViewHolder {
         return FeedItemViewHolder.get(parent)
     }
 
     override fun onBindViewHolder(holder: FeedItemViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), feedClickListener)
     }
 
 }
+
 
 private class DiffCallback : DiffUtil.ItemCallback<FeedItem>() {
     override fun areItemsTheSame(oldItem: FeedItem, newItem: FeedItem): Boolean {
@@ -37,9 +39,13 @@ private class DiffCallback : DiffUtil.ItemCallback<FeedItem>() {
         return (oldItem.post.title == newItem.post.title) &&
                 (oldItem.post.description == newItem.post.description)
         //todo: test me
-        //note: more accurate logic for checking content integrity can added in future.
+        //note: more accurate logic can added in future.
     }
 
+}
+
+interface FeedClickListener {
+    fun onAuthorClicked(feedItem: FeedItem)
 }
 
 class FeedItemViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -54,18 +60,25 @@ class FeedItemViewHolder private constructor(itemView: View) : RecyclerView.View
     }
 
     private val avatar: ShapeableImageView = itemView.findViewById(R.id.feed_item_avatar)
-    private val authorName: MaterialTextView = itemView.findViewById(R.id.feed_item_author_name)
+    private val authorUserName: MaterialTextView = itemView.findViewById(R.id.feed_item_author_name)
     private val title: MaterialTextView = itemView.findViewById(R.id.feed_item_title)
     private val description: MaterialTextView = itemView.findViewById(R.id.feed_item_description)
 
-    fun bind(feedItem: FeedItem) {
+    fun bind(feedItem: FeedItem, listener: FeedClickListener) {
         feedItem.user.also {
-            authorName.text = it.name
+            authorUserName.text = it.userName
             Picasso.get()
                     .load(it.avatar)
                     .into(avatar)
             //todo: placeholder
         }
+        avatar.setThrottledClickListener {
+            listener.onAuthorClicked(feedItem)
+        }
+        authorUserName.setThrottledClickListener {
+            listener.onAuthorClicked(feedItem)
+        }
+
 
         //todo: click
         feedItem.post.also {

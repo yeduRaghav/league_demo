@@ -1,3 +1,7 @@
 <resources>
-  <string name="app_name">Mobile Coding Challenge</string>
+    <string name="app_name">Mobile Coding Challenge</string>
+
+    <string name="error_view_message_default">Oops! Something went wrong!</string>
+    <string name="error_view_message_network_issue">Please check your internet connectivity</string>
+    <string name="error_view_button">Try again</string>
 </resources>

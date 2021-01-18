@@ -1,8 +1,6 @@
 package life.league.challenge.kotlin.ui.homescreen
 
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -11,6 +9,7 @@ import kotlinx.android.synthetic.main.activity_home_screen.*
 import life.league.challenge.kotlin.R
 import life.league.challenge.kotlin.ui.homescreen.usecase.login.FailureReason
 import life.league.challenge.kotlin.ui.model.FeedItem
+import life.league.challenge.kotlin.util.hide
 import life.league.challenge.kotlin.util.show
 
 @AndroidEntryPoint
@@ -21,21 +20,28 @@ class HomeScreenActivity : AppCompatActivity() {
     }
 
     private val viewModel by viewModels<HomeScreenViewModel>()
-    private val feedAdapter = FeedListAdapter()
-
+    private val feedAdapter = FeedListAdapter(object : FeedClickListener {
+        override fun onAuthorClicked(feedItem: FeedItem) {
+            viewModel.postAuthorClicked(feedItem)
+        }
+    })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.i(TAG, "onCreate()")
         setupViews()
         observeViewModel()
-        viewModel.loadHomeScreen()
+        if (savedInstanceState == null) {
+            viewModel.loadHomeScreen()
+        }
     }
 
     private fun setupViews() {
         setContentView(R.layout.activity_home_screen)
         home_screen_recycler_view.apply {
             adapter = feedAdapter
+        }
+        home_screen_error_view.setButtonClickListener {
+            viewModel.loadHomeScreen()
         }
     }
 
@@ -57,54 +63,34 @@ class HomeScreenActivity : AppCompatActivity() {
     }
 
     private fun showLoading() {
-        Toast.makeText(this, "LOADING", Toast.LENGTH_SHORT).show()
-        //todo:
+        home_screen_error_view.hide()
+        home_screen_recycler_view.hide()
+        home_screen_loading_view.show()
     }
 
     private fun showGenericError() {
-        Toast.makeText(this, "GENERAL ERROR", Toast.LENGTH_SHORT).show()
-        //todo:
+        home_screen_recycler_view.hide()
+        home_screen_loading_view.hide()
+        home_screen_error_view.apply {
+            setMessage(false)
+            show()
+        }
     }
 
     private fun showNetworkError() {
-        Toast.makeText(this, "NETWORK ERROR", Toast.LENGTH_SHORT).show()
-        //todo:
+        home_screen_recycler_view.hide()
+        home_screen_loading_view.hide()
+        home_screen_error_view.apply {
+            setMessage(true)
+            show()
+        }
     }
-
 
     private fun showFeed(feedItems: List<FeedItem>) {
+        home_screen_error_view.hide()
+        home_screen_loading_view.hide()
         home_screen_recycler_view.show()
         feedAdapter.submitList(feedItems)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.i(TAG, "onStart()")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.i(TAG, "onResume()")
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        Log.i(TAG, "onRestart()")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.i(TAG, "onPause()")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.i(TAG, "onStop()")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.i(TAG, "onDestroy()")
     }
 
 }

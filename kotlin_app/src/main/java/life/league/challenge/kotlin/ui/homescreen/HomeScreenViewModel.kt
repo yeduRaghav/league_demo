@@ -1,8 +1,10 @@
 package life.league.challenge.kotlin.ui.homescreen
 
-import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import life.league.challenge.kotlin.ui.homescreen.usecase.feed.FeedLoadState
 import life.league.challenge.kotlin.ui.homescreen.usecase.feed.FeedUseCase
 import life.league.challenge.kotlin.ui.homescreen.usecase.login.FailureReason
@@ -15,8 +17,7 @@ import life.league.challenge.kotlin.ui.model.FeedItem
  */
 class HomeScreenViewModel @ViewModelInject constructor(
         private val loginUseCase: LoginUseCase,
-        private val feedUseCase: FeedUseCase,
-        @Assisted private val savedState: SavedStateHandle
+        private val feedUseCase: FeedUseCase
 ) : ViewModel() {
 
     private val screenState = MutableLiveData<HomeScreenState>()
@@ -33,6 +34,11 @@ class HomeScreenViewModel @ViewModelInject constructor(
         } else {
             login()
         }
+    }
+
+
+    fun postAuthorClicked(feedItem: FeedItem) {
+        feedItem.user
     }
 
     private fun loadFeed() {

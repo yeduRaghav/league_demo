@@ -13,6 +13,7 @@
         android:layout_marginTop="@dimen/margin_8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:clickable="true"
         app:shapeAppearanceOverlay="@style/roundedCornersImageView"
         tools:src="@tools:sample/avatars" />
 
@@ -26,6 +27,7 @@
         android:ellipsize="end"
         android:textAppearance="@style/AppTextAppearance.Title2"
         android:maxLines="2"
+        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="@id/feed_item_avatar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/feed_item_avatar"
