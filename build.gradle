@@ -36,6 +36,7 @@ ext {
     constraintLayoutVersion = "2.0.4"
     recyclerViewVersion = "1.1.0"
     cardVersion = "1.0.0"
+    fragmentVersion = "1.2.5"
     materialVersion = "1.2.1"
     picassoVersion = "2.71828"
 

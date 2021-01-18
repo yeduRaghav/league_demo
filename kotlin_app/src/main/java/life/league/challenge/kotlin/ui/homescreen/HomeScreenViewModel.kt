@@ -28,7 +28,11 @@ class HomeScreenViewModel @ViewModelInject constructor(
         setupFeedUseCase()
     }
 
-    fun loadHomeScreen() {
+    fun onFeedScreenReady() {
+        reloadFeed()
+    }
+
+    fun reloadFeed() {
         if (loginUseCase.isLoggedIn()) {
             loadFeed()
         } else {
